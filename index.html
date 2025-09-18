@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Anniversary, Sayang!</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --card-bg: rgba(255, 255, 255, 0.85);
+            --primary-text: #333;
+            --accent-color: #e78fb3;
+            --title-font: 'Great Vibes', cursive;
+            --body-font: 'Poppins', sans-serif;
+            --shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            --success-color: #28a745;
+            --danger-color: #dc3545;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; }
+        body { font-family: var(--body-font); color: var(--primary-text); line-height: 1.6; overflow-x: hidden; }
+        #vanta-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .content-wrapper { position: relative; z-index: 1; max-width: 900px; margin: 0 auto; padding: 20px; }
+        .navbar { display: flex; justify-content: space-between; align-items: center; padding: 15px 30px; background: var(--card-bg); backdrop-filter: blur(10px); border-radius: 50px; box-shadow: var(--shadow); position: sticky; top: 20px; z-index: 100; }
+        .navbar-brand { font-family: var(--title-font); font-size: 2rem; color: var(--accent-color); }
+        .navbar-links { list-style: none; display: flex; gap: 25px; }
+        .navbar-links a { text-decoration: none; color: var(--primary-text); font-weight: 600; transition: color 0.3s ease; }
+        .navbar-links a:hover { color: var(--accent-color); }
+        .hero { text-align: center; padding: 100px 20px; color: white; text-shadow: 0 2px 10px rgba(0,0,0,0.4); }
+        .hero h1 { font-family: var(--title-font); font-size: 6rem; margin-bottom: 0; }
+        .card { background: var(--card-bg); backdrop-filter: blur(10px); margin: 40px 0; padding: 30px; border-radius: 20px; box-shadow: var(--shadow); text-align: center; }
+        .card h2 { font-family: var(--title-font); font-size: 3rem; color: var(--accent-color); margin-bottom: 20px; }
+        .photo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+        .gallery-img { width: 100%; height: 100%; object-fit: cover; border-radius: 15px; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .gallery-img:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
+        .button-group { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
+        .video-btn, .letter-btn { background-color: var(--accent-color); color: white; border: none; padding: 12px 25px; border-radius: 25px; font-size: 1rem; font-weight: 600; cursor: pointer; transition: background-color 0.3s, transform 0.3s; }
+        .video-btn:hover, .letter-btn:hover { background-color: #d17096; transform: translateY(-2px); }
+        .game-board { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; max-width: 400px; margin: 20px auto; }
+        .game-card { width: 100%; aspect-ratio: 1 / 1; position: relative; transform-style: preserve-3d; transition: transform 0.5s; cursor: pointer; }
+        .game-card .front-face, .game-card .back-face { width: 100%; height: 100%; position: absolute; backface-visibility: hidden; border-radius: 10px; background-size: cover; background-position: center; }
+        .game-card .back-face { background-color: var(--accent-color); background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
+        .game-card.flipped { transform: rotateY(180deg); }
+        .game-btn { margin-top: 20px; padding: 10px 20px; border: none; background-color: var(--accent-color); color: white; font-weight: 600; border-radius: 20px; cursor: pointer; transition: background-color 0.3s; }
+        .game-btn:hover { background-color: #d17096; }
+        .quiz-container { max-width: 600px; margin: 20px auto; text-align: left; }
+        #quiz-question { font-size: 1.2rem; font-weight: 600; margin-bottom: 20px; }
+        .answer-buttons { display: grid; grid-template-columns: 1fr; gap: 10px; }
+        .answer-btn { width: 100%; padding: 12px; border: 2px solid var(--accent-color); background-color: white; color: var(--accent-color); border-radius: 10px; cursor: pointer; font-size: 1rem; transition: all 0.3s; }
+        .answer-btn:hover:not([disabled]) { background-color: var(--accent-color); color: white; }
+        .answer-btn.correct { background-color: var(--success-color); border-color: var(--success-color); color: white; }
+        .answer-btn.incorrect { background-color: var(--danger-color); border-color: var(--danger-color); color: white; }
+        #quiz-result { margin-top: 20px; font-size: 1.2rem; font-weight: bold; }
+        .modal { display: none; position: fixed; z-index: 101; padding-top: 0; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.9); align-items: center; justify-content: center; }
+        .image-modal-content { margin: auto; display: block; width: auto; max-width: 80%; max-height: 80vh; }
+        .video-modal-content { position: relative; width: 90%; max-width: 800px; background: black; }
+        .video-wrapper { position: relative; padding-bottom: 56.25%; height: 0; }
+        .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+        .close-btn { position: absolute; top: 15px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer; z-index: 102; }
+        .video-modal .close-btn { top: -40px; right: 0; }
+        
+        /* PERBAIKAN DI SINI */
+        .letter-modal-content { 
+            background: #fffaf0; padding: 40px; border-radius: 15px; 
+            max-width: 500px; width: 90%; position: relative; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: left; 
+            border: 1px solid #eee; 
+            max-height: 80vh; /* Tambahkan tinggi maksimal */
+            overflow-y: auto; /* Tambahkan scroll jika konten lebih panjang */
+        }
+
+        #letter-modal .close-btn, #messages-modal .close-btn { color: #888; top: 10px; right: 20px; font-size: 30px; }
+        .letter-content h3 { font-family: var(--title-font); color: var(--accent-color); font-size: 2.5rem; text-align: center; }
+        .letter-content p { margin-top: 20px; font-size: 1rem; line-height: 1.8; color: #555; white-space: pre-wrap; /* Agar baris baru dari teks terbaca */ }
+        .letter-content .signature { margin-top: 30px; text-align: right; font-style: italic; font-weight: 600; }
+        .scramble-container { max-width: 500px; margin: 20px auto; }
+        #scrambled-word { font-size: 2.5rem; font-weight: 600; letter-spacing: 8px; color: var(--accent-color); margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 10px; }
+        .scramble-input-group { display: flex; gap: 10px; justify-content: center; }
+        .scramble-input { padding: 10px; border-radius: 10px; border: 2px solid #ddd; font-size: 1rem; text-align: center; width: 70%; }
+        .scramble-input:focus { border-color: var(--accent-color); outline: none; }
+        #scramble-feedback { margin-top: 15px; font-weight: bold; height: 20px; }
+        .special-album-content { background: #fff; border-radius: 15px; max-width: 90%; width: 800px; max-height: 80vh; overflow-y: auto; padding: 30px; position: relative; }
+        .special-album-content h3 { font-family: var(--title-font); color: var(--accent-color); font-size: 2.5rem; text-align: center; margin-bottom: 20px; }
+        .special-photo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; }
+        .special-photo-grid img { width: 100%; border-radius: 10px; }
+        .messages-content { display: flex; flex-direction: column; gap: 15px; max-height: 80vh; overflow-y: auto; background: #fffaf0; padding: 30px; border-radius: 15px; max-width: 500px; width: 90%; }
+        .message-note { background: #fff; padding: 15px; border-radius: 8px; border-left: 5px solid var(--accent-color); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+    </style>
+</head>
+<body>
+
+    <div id="vanta-bg"></div>
+
+    <div class="content-wrapper">
+        <nav class="navbar">
+            <div class="navbar-brand">Our Story</div>
+            <ul class="navbar-links">
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#video">Video</a></li>
+                <li><a href="#wishes">Ucapan</a></li>
+                <li><a href="#games">Mini Games</a></li>
+                <li><a href="https://ademandala22.github.io/Nelle-s/">Whoop</a></li>
+            </ul>
+        </nav>
+
+        <header class="hero">
+            <h1>Happy Anniversary</h1>
+        </header>
+
+        <main>
+            <section id="gallery" class="card">
+                <h2>Momen Kita</h2>
+                <div class="photo-grid">
+                    <img src="images/foto1.jpg" alt="Kenangan 1" class="gallery-img">
+                    <img src="images/foto2.jpg" alt="Kenangan 2" class="gallery-img">
+                    <img src="images/foto3.jpg" alt="Kenangan 3" class="gallery-img">
+                    <img src="images/foto4.jpg" alt="Kenangan 4" class="gallery-img">
+                    <img src="images/foto5.jpg" alt="Kenangan 5" class="gallery-img">
+                    <img src="images/foto6.jpg" alt="Kenangan 6" class="gallery-img">
+                    <img src="images/foto7.jpg" alt="Kenangan 1" class="gallery-img">
+                    <img src="images/foto8.jpg" alt="Kenangan 2" class="gallery-img">
+                    <img src="images/foto9.jpg" alt="Kenangan 3" class="gallery-img">
+                    <img src="images/foto10.jpg" alt="Kenangan 4" class="gallery-img">
+                    <img src="images/foto11.jpg" alt="Kenangan 5" class="gallery-img">
+                    <img src="images/foto12.jpg" alt="Kenangan 6" class="gallery-img">
+                    <img src="images/foto13.jpg" alt="Kenangan 1" class="gallery-img">
+                    <img src="images/foto14.jpg" alt="Kenangan 2" class="gallery-img">
+                    <img src="images/foto15.jpg" alt="Kenangan 3" class="gallery-img">
+                    <img src="images/foto16.jpg" alt="Kenangan 4" class="gallery-img">
+                    <img src="images/foto17.jpg" alt="Kenangan 5" class="gallery-img">
+                    <img src="images/foto18.jpg" alt="Kenangan 6" class="gallery-img">
+                    <img src="images/foto19.jpg" alt="Kenangan 5" class="gallery-img">
+                    <img src="images/foto20.jpg" alt="Kenangan 6" class="gallery-img">
+                    <img src="images/foto21.jpg" alt="Kenangan 4" class="gallery-img">
+                    <img src="images/foto22.jpg" alt="Kenangan 5" class="gallery-img">
+                    <img src="images/foto23.jpg" alt="Kenangan 6" class="gallery-img">
+                    <img src="images/foto24.jpg" alt="Kenangan 5" class="gallery-img">
+                    <img src="images/foto25.jpg" alt="Kenangan 6" class="gallery-img">
+                    <img src="images/foto26.jpg" alt="Kenangan 6" class="gallery-img">
+                    <img src="images/foto27.jpg" alt="Kenangan 5" class="gallery-img">
+                    <img src="images/foto28.jpg" alt="Kenangan 6" class="gallery-img">
+                    <img src="images/foto29.jpg" alt="Kenangan 6" class="gallery-img">
+                    <img src="images/foto30.jpg" alt="Kenangan 6" class="gallery-img">
+                    <img src="images/foto31.jpg" alt="Kenangan 5" class="gallery-img">
+                    <img src="images/foto32.jpg" alt="Kenangan 6" class="gallery-img">
+                </div>
+            </section>
+
+            <section id="video" class="card">
+                <h2>This Is Secret</h2>
+                <div class="button-group">
+                    <button class="video-btn" data-video-id="lMXhSGsQhsc">HIT THE BUTTON FIRST</button>
+                    <button class="video-btn" data-video-id="m5hTpQ4snJM">THIS ONE TOO</button>
+                </div>
+            </section>
+
+            <section id="wishes" class="card">
+                <h2>Read This</h2>
+                <p style="margin-bottom: 20px;">...</p>
+                <div class="button-group">
+                    <button id="open-letter-btn" class="letter-btn">- Read This One -</button>
+                    <button id="open-special-album-btn" class="letter-btn">- See This One Too -</button>
+                    <button id="open-messages-btn" class="letter-btn">- Read This One For The Last -</button>
+                </div>
+            </section>
+
+            <section id="games" class="card">
+                <h2>Enjoy The Game</h2>
+                <p>Macth The Picture</p>
+                <div class="game-board" id="game-board"></div>
+                <button id="reset-game-btn" class="game-btn">Play Again</button>
+                <hr style="margin: 40px 0; border: 1px solid #eee;">
+                
+                <h2>Kuis Kenangan</h2>
+                <p>Seberapa ingat kamu dengan cerita kita?</p>
+                <div class="quiz-container">
+                    <div id="quiz-question">Pertanyaan akan muncul di sini...</div>
+                    <div id="answer-buttons" class="answer-buttons"></div>
+                    <div id="quiz-result"></div>
+                    <button id="next-quiz-btn" class="game-btn" style="display: none; margin-top: 20px;">Lanjut!</button>
+                </div>
+                <hr style="margin: 40px 0; border: 1px solid #eee;">
+
+                <h2>Susun Kata Cinta</h2>
+                <p>Susun huruf acak ini menjadi kata yang bermakna!</p>
+                <div class="scramble-container">
+                    <div id="scrambled-word">MEMUAT...</div>
+                    <div class="scramble-input-group">
+                        <input type="text" id="scramble-guess" class="scramble-input" placeholder="Ketik jawabanmu...">
+                        <button id="scramble-submit" class="game-btn">Jawab</button>
+                    </div>
+                    <p id="scramble-feedback"></p>
+                </div>
+            </section>
+        </main>
+
+        <footer><p>It's Your Boy - A.M</p></footer>
+    </div>
+
+    <div id="image-modal" class="modal"><span class="close-btn" id="close-image-modal">&times;</span><img class="image-modal-content" id="modal-img"></div>
+    <div id="video-modal" class="modal"><div class="video-modal-content"><span class="close-btn" id="close-video-modal">&times;</span><div class="video-wrapper"><iframe id="video-player" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe></div></div></div>
+    
+    <div id="letter-modal" class="modal">
+        <div class="letter-modal-content">
+            <span class="close-btn" id="close-letter-modal">&times;</span>
+            <div class="letter-content">
+                <h3>Untukmu, Sayang</h3>
+                <p><s>HAPPY ANNIVERSARY PACARKU
+
+Cieee udah setahun aja sekarang kita yakk , 
+aku mau bilang terima kasih sudah mau berpetualangan sama-sama sampai sekarang 
+terima kasih juga udah ngasih kesempatan dan nerima aku sampai sejauh ini
+maaf kalau jalanya mungkin ga semulus yang diharapkan, but trust me
+aku ga janjiin semuanya harus berjalan sempurna tapi ku usahain semuanya tetap aman dan tetap baik untuk kedepanya.
+maaf juga kalau selama ini aku banyak salahnya , banyak bikin marah-marah , bikin badmood, atau ada kata-kata ku yang bikin pacarku sakit hati ,sorry bout that.
+
+pokoknya aku mau bilang selamat dan terima kasih sudah berjuang sejauh ini, 
+semoga kedepanya kita bisa lebih baik , cause petualangan kita masih banyak yang harus ditempuh wkwk.
+
+so , once again happy anniversary sayangkuu 
+lopyouuuu so much 🤍. </s>
+
+                    <br>abaikan saja yang di atas yak , ini semua udah siapan dari akhir tahun kemarin
+dan alasan kenapa ku minta waktu untuk 5 hari kemarin , yapp karna ini wkwk. karna tujuan mau ku kasih pas tanggal 22, tapi waktu dan takdir berkata lain its okay , aku tetap harus nepatin janjiku sendiri untuk kasih ini pas tanggal 22.
+karna aku udah nyiapin udah lama banget , dan sayang kalau cuman aku yang lihat ini sendiri 
+aku ga tau mungkin ini ga berarti buat kamu , tapi jujur pas nonton lagi ini video ada rasa senang dan sedih. senang karna aku bisa nepatin janji dengan diri ku sendiri untuk buat ini dan kasih ke kamu, sedihnya ya aku ngerayain sendiri, tapi gapapa udah jalanya dari atas kayak gini aku nerima dan iklas walupun dengan berat hati.
+kalau mau bilang aku egois ya , egois sekali aku saking sayang ke kamu sampai ga mau pisah, ku masih coba mau perbaiki lagi, 
+tapi satu sisi aku sangat amat not good for you, tapi ku cuman mau bilang kamu last hope ku sebenarnya ,last energy juga ,jadi u will last of my part. jadi sorry buat keegoisan diri ku. trust me selesai ini mungkin aku gatau kek mana lagi but
+kalau masih mau temenenan dengan senang hati ku hargai itu , tapi kalau memang kamu benar" ga mau sama skli gapapa aku ga maksain.
+maaf kalau ini ga seberapa nilainya buat kamu, aku punya little gift buat kamu ga tau nyampenya pas tanggal 22 apa ga nanti mungkin bisa lebih sehari
+pokoknya nanti terima yak. aku tau nilainya ga seberapa itu buat kamu. ga usah dibalas , karna aku udah ga di waingapu atau kupang lagi nanti, i wiil go to someplace nobody can find me.
+oh iya, foto-fotonya masih banyak sih cuman gapapa yak itu aja takutnya kebanyakan dan bosan liatnya nanti.
+nanti kalau udah nonton semua videonya komen aja ya di youtube yak, biar ku private lagi semuanya websitenya dan videonya.
+nanti tinggal klik salin link videonya baru buka lewat browser linknya biar ke direct langsung ke youtube. 
+<br>
+Timaaciii Epaa sehat" terus, bahagia dan semangat terus kedepannya semoga dapat yang lebih jauh amat sangat baik kedepanya. maaf dapatnya aku, maaf juga udah buang" waktunya selama ini sama aku.</p>
+                <div class="signature">-It's Your Boy - A.M-</div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="special-album-modal" class="modal"><div class="special-album-content"><span class="close-btn" id="close-special-album-modal">&times;</span>
+        <h3>Our Journey</h3>
+        <div class="special-photo-grid">
+            <img src="images/foto33.jpg" alt="Foto Spesial 1">
+            <img src="images/foto34.jpg" alt="Foto Spesial 2">
+            <img src="images/foto35.jpg" alt="Foto Spesial 3">
+            <img src="images/foto36.jpg" alt="Foto Spesial 4">
+            <img src="images/foto37.jpg" alt="Foto Spesial 1">
+            <img src="images/foto38.jpg" alt="Foto Spesial 2">
+            <img src="images/foto39.jpg" alt="Foto Spesial 3">
+            <img src="images/foto40.jpg" alt="Foto Spesial 4">
+            <img src="images/foto41.jpg" alt="Foto Spesial 1">
+            <img src="images/foto42.jpg" alt="Foto Spesial 2">
+            <img src="images/foto43.jpg" alt="Foto Spesial 3">
+            <img src="images/foto44.jpg" alt="Foto Spesial 4">
+            <img src="images/foto45.jpg" alt="Foto Spesial 1">
+            <img src="images/foto46.jpg" alt="Foto Spesial 2">
+            <img src="images/foto47.jpg" alt="Foto Spesial 3">
+            <img src="images/foto48.jpg" alt="Foto Spesial 4">
+            <img src="images/foto49.jpg" alt="Foto Spesial 1">
+            <!-- <img src="images/foto.jpg" alt="Foto Spesial 2">
+            <img src="images/foto.jpg" alt="Foto Spesial 3">
+            <img src="images/foto.jpg" alt="Foto Spesial 4">
+            <img src="images/foto.jpg" alt="Foto Spesial 1">
+            <img src="images/foto.jpg" alt="Foto Spesial 2">
+            <img src="images/foto.jpg" alt="Foto Spesial 3">
+            <img src="images/foto.jpg" alt="Foto Spesial 4">
+            <img src="images/foto.jpg" alt="Foto Spesial 1">
+            <img src="images/foto.jpg" alt="Foto Spesial 2">
+            <img src="images/foto.jpg" alt="Foto Spesial 3">
+            <img src="images/foto.jpg" alt="Foto Spesial 4">
+            <img src="images/foto.jpg" alt="Foto Spesial 1">
+            <img src="images/foto.jpg" alt="Foto Spesial 2">
+            <img src="images/foto.jpg" alt="Foto Spesial 3">
+            <img src="images/foto.jpg" alt="Foto Spesial 4"> -->
+        
+        
+        
+        
+        </div></div></div>
+    
+    <div id="messages-modal" class="modal">
+        <div class="messages-content">
+            <span class="close-btn" id="close-messages-modal">&times;</span>
+            <div class="message-note">
+                <p>"aku lepasin kamu aku ikhlasin kamu,
+                    karna segala sesuatu yang di paksa itu gabaik, maaf klo kmarin" aku egois aku gamau kita pisah tapi sekarang aku terima semua keputusan kamu itu.
+                    i love u so much and it hurts, tapi aku gaakan pernah nyalahin kamu when everythings end. 
+                    aku selalu ingat kamu juga sedang berproses, bertumbuh dan kamu bukan orang jahat, hanya saja aku not a good one for you.
+                    hidup masih panjang, if u finally choose another someone out there that's okay. karna sekarang aku hanya ingin melihat kamu sehat dan bahagia."
+                </p>
+            </div>
+            <div class="message-note">
+                <p>"kamu baik' ke depannya ya, makasi ya udah ngasi rasa di setiap notif kamu, 
+                    makasi juga udah mau kenal ke pribadi aku yang ngga semua orang tau, 
+                    aku gagal dan hari ini aku berusaha ikhlas untuk semuanya, maafin aku, aku udah berusaha sebaik mungkin, 
+                    tugasku udah selesai dan kamu selamat melanjutkan perjalan kamu,
+                    jaga dirimu dengan baik dan hiduplah dengan bahagia setelah terlepas dari hari burukmu bersamaku, aku mencintaimu, berbahagialah 
+                    dan terimakasih untuk waktu yang telah kita lalui bersama, mungkin aku gabakal lupain waktu bersamamu, 
+                    bahagia terus yak dan sehat" , i love u."
+                </p>
+            </div>
+            <div class="message-note">
+                <p>"I met you when i was not looking for you, and i lost you when i loved you the most."</p>
+            </div>
+            <div class="message-note">
+                <p>"See you when i see you."</p>
+            </div>
+        </div>
+    </div>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.birds.min.js"></script>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        VANTA.BIRDS({
+            el: "#vanta-bg", mouseControls: true, touchControls: true, gyroControls: false,
+            minHeight: 200.00, minWidth: 200.00, scale: 1.00, scaleMobile: 1.00,
+            backgroundColor: 0xfde2e4, color1: 0xe78fb3, color2: 0x89cff0,
+            birdSize: 1.20, quantity: 3.00
+        });
+
+        const imageModal = document.getElementById("image-modal");
+        document.querySelectorAll(".gallery-img").forEach(img => { img.onclick = () => { imageModal.style.display = "flex"; document.getElementById("modal-img").src = img.src; }; });
+        document.getElementById("close-image-modal").onclick = () => imageModal.style.display = "none";
+
+        const videoModal = document.getElementById("video-modal");
+        const videoPlayer = document.getElementById("video-player");
+        document.querySelectorAll(".video-btn").forEach(button => { button.onclick = () => { const videoId = button.getAttribute('data-video-id'); videoPlayer.src = `https://www.youtube.com/embed/${videoId}?autoplay=1`; videoModal.style.display = "flex"; }; });
+        document.getElementById("close-video-modal").onclick = () => { videoModal.style.display = "none"; videoPlayer.src = ""; };
+
+        const letterModal = document.getElementById("letter-modal");
+        document.getElementById("open-letter-btn").onclick = () => { letterModal.style.display = "flex"; };
+        document.getElementById("close-letter-modal").onclick = () => { letterModal.style.display = "none"; };
+
+        const specialAlbumModal = document.getElementById("special-album-modal");
+        document.getElementById("open-special-album-btn").onclick = () => { specialAlbumModal.style.display = "flex"; };
+        document.getElementById("close-special-album-modal").onclick = () => { specialAlbumModal.style.display = "none"; };
+
+        const messagesModal = document.getElementById("messages-modal");
+        document.getElementById("open-messages-btn").onclick = () => { messagesModal.style.display = "flex"; };
+        document.getElementById("close-messages-modal").onclick = () => { messagesModal.style.display = "none"; };
+
+        window.onclick = (event) => {
+            if (event.target == imageModal) imageModal.style.display = "none";
+            if (event.target == videoModal) { videoModal.style.display = "none"; videoPlayer.src = ""; }
+            if (event.target == letterModal) letterModal.style.display = "none";
+            if (event.target == specialAlbumModal) specialAlbumModal.style.display = "none";
+            if (event.target == messagesModal) messagesModal.style.display = "none";
+        };
+
+        const gameBoard = document.getElementById('game-board');
+        const resetGameBtn = document.getElementById('reset-game-btn');
+        const cardImages = ['images/foto1.jpg', 'images/foto2.jpg', 'images/foto3.jpg', 'images/foto1.jpg', 'images/foto2.jpg', 'images/foto3.jpg'];
+        let flippedCards = [], matchedPairs = 0;
+        function createGameBoard() {
+            gameBoard.innerHTML = ''; matchedPairs = 0;
+            cardImages.sort(() => Math.random() - 0.5);
+            cardImages.forEach(src => {
+                const card = document.createElement('div');
+                card.classList.add('game-card'); card.dataset.image = src;
+                card.innerHTML = `<div class="front-face" style="background-image: url('${src}')"></div><div class="back-face"></div>`;
+                gameBoard.appendChild(card);
+                card.addEventListener('click', flipCard);
+            });
+        }
+        function flipCard() {
+            if (flippedCards.length < 2 && !this.classList.contains('flipped')) {
+                this.classList.add('flipped'); flippedCards.push(this);
+                if (flippedCards.length === 2) setTimeout(checkForMatch, 1000);
+            }
+        }
+        function checkForMatch() {
+            const [card1, card2] = flippedCards;
+            if (card1.dataset.image === card2.dataset.image) {
+                matchedPairs++;
+                if (matchedPairs === cardImages.length / 2) {
+                    setTimeout(() => alert('Hore! Kamu berhasil mencocokkan semua kenangan kita!'), 500);
+                }
+            } else {
+                card1.classList.remove('flipped'); card2.classList.remove('flipped');
+            }
+            flippedCards = [];
+        }
+        resetGameBtn.addEventListener('click', createGameBoard);
+        createGameBoard();
+
+        const quizQuestionEl = document.getElementById('quiz-question');
+        const answerButtonsEl = document.getElementById('answer-buttons');
+        const quizResultEl = document.getElementById('quiz-result');
+        const nextQuizBtn = document.getElementById('next-quiz-btn');
+        const quizQuestions = [
+            { question: "Kapan pertama kamu follow aku di TikTok?", answers: [{ text: "27 Feb 2024", correct: true }, { text: "22 Sep 2024", correct: false }, { text: "08 Agust 2024", correct: false }, { text: "07 Mei 2024", correct: false }] },
+            { question: "Awal Chattan pertama kali dimana?", answers: [{ text: "Instagram", correct: true }, { text: "Discord", correct: false }, { text: "Whatsapp", correct: false }, { text: "TikTok", correct: false }] },
+            { question: "Masih ada pertanyaan selanjutnya cuman gapapa, sampai sini aja yak , Terima Kasih Sudah Menjawab", answers: [{ text: "🤍", correct: true }, { text: "🤍", correct: true }, { text: "🤍", correct: true }, { text: "🤍", correct: true }] }
+        ];
+        let currentQuestionIndex = 0; let score = 0;
+        function startQuiz() {
+            currentQuestionIndex = 0; score = 0; quizResultEl.innerText = '';
+            nextQuizBtn.style.display = 'none'; showQuestion();
+        }
+        function showQuestion() {
+            resetState();
+            let currentQuestion = quizQuestions[currentQuestionIndex];
+            quizQuestionEl.innerText = `${currentQuestionIndex + 1}. ${currentQuestion.question}`;
+            currentQuestion.answers.forEach(answer => {
+                const button = document.createElement('button');
+                button.innerText = answer.text; button.classList.add('answer-btn');
+                if (answer.correct) { button.dataset.correct = true; }
+                button.addEventListener('click', selectAnswer);
+                answerButtonsEl.appendChild(button);
+            });
+        }
+        function resetState() {
+            nextQuizBtn.style.display = 'none';
+            while (answerButtonsEl.firstChild) { answerButtonsEl.removeChild(answerButtonsEl.firstChild); }
+        }
+        function selectAnswer(e) {
+            const selectedBtn = e.target;
+            const isCorrect = selectedBtn.dataset.correct === "true";
+            if (isCorrect) { selectedBtn.classList.add("correct"); score++; } 
+            else { selectedBtn.classList.add("incorrect"); }
+            Array.from(answerButtonsEl.children).forEach(button => {
+                if (button.dataset.correct === "true") { button.classList.add("correct"); }
+                button.disabled = true;
+            });
+            nextQuizBtn.style.display = 'block';
+        }
+        nextQuizBtn.addEventListener('click', () => {
+            currentQuestionIndex++;
+            if (currentQuestionIndex < quizQuestions.length) {
+                showQuestion();
+            } else {
+                resetState();
+                quizQuestionEl.innerText = "Kuis Selesai!";
+                quizResultEl.innerText = `Skor kamu: ${score} dari ${quizQuestions.length} pertanyaan! Terima Kasih Sudah Menjawab!`;
+                nextQuizBtn.innerText = 'Ulangi Kuis';
+                nextQuizBtn.onclick = startQuiz;
+            }
+        });
+        startQuiz();
+
+        const scrambleWordEl = document.getElementById('scrambled-word');
+        const scrambleGuessEl = document.getElementById('scramble-guess');
+        const scrambleSubmitBtn = document.getElementById('scramble-submit');
+        const scrambleFeedbackEl = document.getElementById('scramble-feedback');
+        const scrambleWords = ["CINTA", "SAYANG", "SELAMANYA", "KENANGAN", "BAHAGIA", "BERSAMA", "RINDU", "ILOVEYOU", 'MISSYOU', "PERSEFONE", "HADES"];
+        let currentScrambleIndex = 0;
+        let currentWord = '';
+        function startScrambleGame() {
+            currentScrambleIndex = 0;
+            scrambleGuessEl.style.display = 'inline-block';
+            scrambleSubmitBtn.style.display = 'inline-block';
+            loadNextScrambleWord();
+        }
+        function loadNextScrambleWord() {
+            if (currentScrambleIndex >= scrambleWords.length) {
+                scrambleWordEl.textContent = "SELESAI!";
+                scrambleFeedbackEl.textContent = "Kamu hebat! ❤️";
+                scrambleGuessEl.style.display = 'none';
+                scrambleSubmitBtn.style.display = 'none';
+                return;
+            }
+            currentWord = scrambleWords[currentScrambleIndex];
+            let shuffledWord = currentWord.split('').sort(() => 0.5 - Math.random()).join('');
+            if(shuffledWord === currentWord && currentWord.length > 1) {
+                loadNextScrambleWord(); return;
+            }
+            scrambleWordEl.textContent = shuffledWord;
+            scrambleGuessEl.value = '';
+            scrambleFeedbackEl.textContent = '';
+            scrambleGuessEl.focus();
+        }
+        function checkScrambleGuess() {
+            const userGuess = scrambleGuessEl.value.toUpperCase();
+            if (userGuess === currentWord) {
+                scrambleFeedbackEl.textContent = "Benar! Lanjut...";
+                scrambleFeedbackEl.style.color = 'var(--success-color)';
+                currentScrambleIndex++;
+                setTimeout(loadNextScrambleWord, 1500);
+            } else {
+                scrambleFeedbackEl.textContent = "Salah, coba lagi!";
+                scrambleFeedbackEl.style.color = 'var(--danger-color)';
+            }
+        }
+        scrambleSubmitBtn.addEventListener('click', checkScrambleGuess);
+        scrambleGuessEl.addEventListener('keyup', (event) => {
+            if (event.key === 'Enter') { checkScrambleGuess(); }
+        });
+        startScrambleGame();
+    });
+    </script>
+</body>
+</html>
