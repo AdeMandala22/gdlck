@@ -33,7 +33,7 @@
         .hero h1 { font-family: var(--title-font); font-size: 6rem; margin-bottom: 0; }
         .card { background: var(--card-bg); backdrop-filter: blur(10px); margin: 40px 0; padding: 30px; border-radius: 20px; box-shadow: var(--shadow); text-align: center; }
         .card h2 { font-family: var(--title-font); font-size: 3rem; color: var(--accent-color); margin-bottom: 20px; }
-        .photo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; }
+        .photo-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 15px; }
         .gallery-img { width: 100%; height: 100%; object-fit: cover; border-radius: 15px; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease; }
         .gallery-img:hover { transform: scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.2); }
         .button-group { display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; }
@@ -61,20 +61,10 @@
         .video-wrapper iframe { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
         .close-btn { position: absolute; top: 15px; right: 35px; color: #f1f1f1; font-size: 40px; font-weight: bold; cursor: pointer; z-index: 102; }
         .video-modal .close-btn { top: -40px; right: 0; }
-        
-        /* PERBAIKAN DI SINI */
-        .letter-modal-content { 
-            background: #fffaf0; padding: 40px; border-radius: 15px; 
-            max-width: 500px; width: 90%; position: relative; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: left; 
-            border: 1px solid #eee; 
-            max-height: 80vh; /* Tambahkan tinggi maksimal */
-            overflow-y: auto; /* Tambahkan scroll jika konten lebih panjang */
-        }
-
+        .letter-modal-content { background: #fffaf0; padding: 40px; border-radius: 15px; max-width: 500px; width: 90%; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.2); text-align: left; border: 1px solid #eee; max-height: 80vh; overflow-y: auto; }
         #letter-modal .close-btn, #messages-modal .close-btn { color: #888; top: 10px; right: 20px; font-size: 30px; }
         .letter-content h3 { font-family: var(--title-font); color: var(--accent-color); font-size: 2.5rem; text-align: center; }
-        .letter-content p { margin-top: 20px; font-size: 1rem; line-height: 1.8; color: #555; white-space: pre-wrap; /* Agar baris baru dari teks terbaca */ }
+        .letter-content p { margin-top: 20px; font-size: 1rem; line-height: 1.8; color: #555; white-space: pre-wrap; }
         .letter-content .signature { margin-top: 30px; text-align: right; font-style: italic; font-weight: 600; }
         .scramble-container { max-width: 500px; margin: 20px auto; }
         #scrambled-word { font-size: 2.5rem; font-weight: 600; letter-spacing: 8px; color: var(--accent-color); margin-bottom: 20px; background: #fff; padding: 15px; border-radius: 10px; }
@@ -88,6 +78,26 @@
         .special-photo-grid img { width: 100%; border-radius: 10px; }
         .messages-content { display: flex; flex-direction: column; gap: 15px; max-height: 80vh; overflow-y: auto; background: #fffaf0; padding: 30px; border-radius: 15px; max-width: 500px; width: 90%; }
         .message-note { background: #fff; padding: 15px; border-radius: 8px; border-left: 5px solid var(--accent-color); box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+
+        /* --- KODE CSS BARU UNTUK TAMPILAN RESPONSIVE --- */
+        @media (max-width: 768px) {
+            .content-wrapper { padding: 10px; }
+            .navbar { flex-direction: column; gap: 10px; padding: 15px; border-radius: 30px; }
+            .navbar-links { gap: 15px; flex-wrap: wrap; justify-content: center; }
+            .navbar-links a { font-size: 0.9rem; }
+            .hero { padding: 60px 20px; }
+            .hero h1 { font-size: 4rem; }
+            .card { padding: 20px; }
+            .card h2 { font-size: 2.5rem; }
+            #scrambled-word { font-size: 1.8rem; letter-spacing: 5px; }
+            .scramble-input-group { flex-direction: column; }
+            .scramble-input { width: 100%; }
+            .letter-modal-content, .messages-content { padding: 20px; }
+            .letter-content h3 { font-size: 2rem; }
+            .letter-content p { font-size: 0.9rem; }
+            .video-modal .close-btn { top: 15px; right: 15px; }
+            .photo-grid { grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; }
+        }
     </style>
 </head>
 <body>
@@ -243,45 +253,26 @@ Timaaciii Epaa sehat" terus, bahagia dan semangat terus kedepannya semoga dapat 
     </div>
     
     <div id="special-album-modal" class="modal"><div class="special-album-content"><span class="close-btn" id="close-special-album-modal">&times;</span>
-        <h3>Our Journey</h3>
-        <div class="special-photo-grid">
-            <img src="images/foto33.jpg" alt="Foto Spesial 1">
-            <img src="images/foto34.jpg" alt="Foto Spesial 2">
-            <img src="images/foto35.jpg" alt="Foto Spesial 3">
-            <img src="images/foto36.jpg" alt="Foto Spesial 4">
-            <img src="images/foto37.jpg" alt="Foto Spesial 1">
-            <img src="images/foto38.jpg" alt="Foto Spesial 2">
-            <img src="images/foto39.jpg" alt="Foto Spesial 3">
-            <img src="images/foto40.jpg" alt="Foto Spesial 4">
-            <img src="images/foto41.jpg" alt="Foto Spesial 1">
-            <img src="images/foto42.jpg" alt="Foto Spesial 2">
-            <img src="images/foto43.jpg" alt="Foto Spesial 3">
-            <img src="images/foto44.jpg" alt="Foto Spesial 4">
-            <img src="images/foto45.jpg" alt="Foto Spesial 1">
-            <img src="images/foto46.jpg" alt="Foto Spesial 2">
-            <img src="images/foto47.jpg" alt="Foto Spesial 3">
-            <img src="images/foto48.jpg" alt="Foto Spesial 4">
-            <img src="images/foto49.jpg" alt="Foto Spesial 1">
-            <!-- <img src="images/foto.jpg" alt="Foto Spesial 2">
-            <img src="images/foto.jpg" alt="Foto Spesial 3">
-            <img src="images/foto.jpg" alt="Foto Spesial 4">
-            <img src="images/foto.jpg" alt="Foto Spesial 1">
-            <img src="images/foto.jpg" alt="Foto Spesial 2">
-            <img src="images/foto.jpg" alt="Foto Spesial 3">
-            <img src="images/foto.jpg" alt="Foto Spesial 4">
-            <img src="images/foto.jpg" alt="Foto Spesial 1">
-            <img src="images/foto.jpg" alt="Foto Spesial 2">
-            <img src="images/foto.jpg" alt="Foto Spesial 3">
-            <img src="images/foto.jpg" alt="Foto Spesial 4">
-            <img src="images/foto.jpg" alt="Foto Spesial 1">
-            <img src="images/foto.jpg" alt="Foto Spesial 2">
-            <img src="images/foto.jpg" alt="Foto Spesial 3">
-            <img src="images/foto.jpg" alt="Foto Spesial 4"> -->
-        
-        
-        
-        
-        </div></div></div>
+            <h3>Our Journey</h3>
+            <div class="special-photo-grid">
+                <img src="images/foto33.jpg" alt="Foto Spesial 1">
+                <img src="images/foto34.jpg" alt="Foto Spesial 2">
+                <img src="images/foto35.jpg" alt="Foto Spesial 3">
+                <img src="images/foto36.jpg" alt="Foto Spesial 4">
+                <img src="images/foto37.jpg" alt="Foto Spesial 1">
+                <img src="images/foto38.jpg" alt="Foto Spesial 2">
+                <img src="images/foto39.jpg" alt="Foto Spesial 3">
+                <img src="images/foto40.jpg" alt="Foto Spesial 4">
+                <img src="images/foto41.jpg" alt="Foto Spesial 1">
+                <img src="images/foto42.jpg" alt="Foto Spesial 2">
+                <img src="images/foto43.jpg" alt="Foto Spesial 3">
+                <img src="images/foto44.jpg" alt="Foto Spesial 4">
+                <img src="images/foto45.jpg" alt="Foto Spesial 1">
+                <img src="images/foto46.jpg" alt="Foto Spesial 2">
+                <img src="images/foto47.jpg" alt="Foto Spesial 3">
+                <img src="images/foto48.jpg" alt="Foto Spesial 4">
+                <img src="images/foto49.jpg" alt="Foto Spesial 1">
+            </div></div></div>
     
     <div id="messages-modal" class="modal">
         <div class="messages-content">
